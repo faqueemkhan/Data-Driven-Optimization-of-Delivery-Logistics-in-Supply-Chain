@@ -1,0 +1,565 @@
+{
+  "algorithm": "Random Forest Classifier (Balanced)",
+  "model_type": "Pipeline(StandardScaler + OneHotEncoder + RandomForestClassifier)",
+  "training_samples": 20000,
+  "testing_samples": 5000,
+  "target_distribution": {
+    "on_time_0": 18331,
+    "delayed_1": 6669,
+    "delay_rate_pct": 26.68
+  },
+  "metrics": {
+    "accuracy": 0.9242,
+    "precision": 0.8139,
+    "recall": 0.928,
+    "f1_score": 0.8673,
+    "roc_auc": 0.9783
+  },
+  "confusion_matrix": {
+    "true_negative": 3383,
+    "false_positive": 283,
+    "false_negative": 96,
+    "true_positive": 1238
+  },
+  "feature_counts": {
+    "categorical": 20,
+    "numerical": 13,
+    "total_features": 33,
+    "transformed_dimensions": 131
+  },
+  "features_used": {
+    "categorical": [
+      "delivery_partner",
+      "package_type",
+      "vehicle_type",
+      "delivery_mode",
+      "region",
+      "weather_condition",
+      "traffic_level",
+      "delivery_priority",
+      "warehouse_location",
+      "customer_type",
+      "delivery_shift",
+      "operational_zone",
+      "source_city",
+      "destination_city",
+      "route_type",
+      "driver_age_group",
+      "accident_history_flag",
+      "rush_hour_delivery",
+      "weekend_delivery",
+      "holiday_season"
+    ],
+    "numerical": [
+      "distance_km",
+      "package_weight_kg",
+      "expected_time_hours",
+      "driver_experience_years",
+      "order_value",
+      "driver_rating",
+      "road_quality_index",
+      "number_of_stops",
+      "warehouse_to_customer_distance",
+      "vehicle_capacity_utilization",
+      "weather_severity_score",
+      "driver_daily_deliveries",
+      "maintenance_score"
+    ]
+  },
+  "leakage_prevention": {
+    "status": "Verified - Zero Data Leakage",
+    "excluded_features": [
+      "delivery_time_hours",
+      "delivery_status",
+      "delivery_rating",
+      "customer_satisfaction_score",
+      "late_delivery_penalty",
+      "traffic_delay_minutes",
+      "gps_route_deviation_km",
+      "fuel_cost",
+      "delivery_cost",
+      "profit_margin",
+      "net_profit",
+      "return_requested",
+      "delivery_date",
+      "pickup_date",
+      "order_date",
+      "time_variance_hours",
+      "delay_severity",
+      "cost_per_km",
+      "fuel_cost_per_km",
+      "carbon_per_km",
+      "profit_per_km",
+      "effective_speed_kmh"
+    ]
+  },
+  "feature_importances": [
+    {
+      "feature": "delivery_mode",
+      "importance": 0.4225,
+      "importance_pct": 42.25
+    },
+    {
+      "feature": "number_of_stops",
+      "importance": 0.1805,
+      "importance_pct": 18.05
+    },
+    {
+      "feature": "driver_rating",
+      "importance": 0.1295,
+      "importance_pct": 12.95
+    },
+    {
+      "feature": "weather_severity_score",
+      "importance": 0.0372,
+      "importance_pct": 3.72
+    },
+    {
+      "feature": "distance_km",
+      "importance": 0.0336,
+      "importance_pct": 3.36
+    },
+    {
+      "feature": "weather_condition",
+      "importance": 0.0319,
+      "importance_pct": 3.19
+    },
+    {
+      "feature": "warehouse_to_customer_distance",
+      "importance": 0.0317,
+      "importance_pct": 3.17
+    },
+    {
+      "feature": "expected_time_hours",
+      "importance": 0.0193,
+      "importance_pct": 1.93
+    },
+    {
+      "feature": "order_value",
+      "importance": 0.0079,
+      "importance_pct": 0.79
+    },
+    {
+      "feature": "package_weight_kg",
+      "importance": 0.0078,
+      "importance_pct": 0.78
+    },
+    {
+      "feature": "road_quality_index",
+      "importance": 0.0068,
+      "importance_pct": 0.68
+    },
+    {
+      "feature": "maintenance_score",
+      "importance": 0.0068,
+      "importance_pct": 0.68
+    },
+    {
+      "feature": "region",
+      "importance": 0.0067,
+      "importance_pct": 0.67
+    },
+    {
+      "feature": "vehicle_capacity_utilization",
+      "importance": 0.0066,
+      "importance_pct": 0.66
+    },
+    {
+      "feature": "driver_daily_deliveries",
+      "importance": 0.0062,
+      "importance_pct": 0.62
+    },
+    {
+      "feature": "destination_city",
+      "importance": 0.0061,
+      "importance_pct": 0.61
+    },
+    {
+      "feature": "source_city",
+      "importance": 0.0059,
+      "importance_pct": 0.59
+    },
+    {
+      "feature": "delivery_partner",
+      "importance": 0.0054,
+      "importance_pct": 0.54
+    },
+    {
+      "feature": "package_type",
+      "importance": 0.0052,
+      "importance_pct": 0.52
+    },
+    {
+      "feature": "driver_experience_years",
+      "importance": 0.005,
+      "importance_pct": 0.5
+    },
+    {
+      "feature": "vehicle_type",
+      "importance": 0.0045,
+      "importance_pct": 0.45
+    },
+    {
+      "feature": "delivery_priority",
+      "importance": 0.0038,
+      "importance_pct": 0.38
+    },
+    {
+      "feature": "delivery_shift",
+      "importance": 0.0037,
+      "importance_pct": 0.37
+    },
+    {
+      "feature": "driver_age_group",
+      "importance": 0.0036,
+      "importance_pct": 0.36
+    },
+    {
+      "feature": "warehouse_location",
+      "importance": 0.0036,
+      "importance_pct": 0.36
+    },
+    {
+      "feature": "operational_zone",
+      "importance": 0.0035,
+      "importance_pct": 0.35
+    },
+    {
+      "feature": "traffic_level",
+      "importance": 0.0035,
+      "importance_pct": 0.35
+    },
+    {
+      "feature": "route_type",
+      "importance": 0.003,
+      "importance_pct": 0.3
+    },
+    {
+      "feature": "rush_hour_delivery",
+      "importance": 0.0021,
+      "importance_pct": 0.21
+    },
+    {
+      "feature": "customer_type",
+      "importance": 0.002,
+      "importance_pct": 0.2
+    },
+    {
+      "feature": "weekend_delivery",
+      "importance": 0.0019,
+      "importance_pct": 0.19
+    },
+    {
+      "feature": "holiday_season",
+      "importance": 0.0016,
+      "importance_pct": 0.16
+    },
+    {
+      "feature": "accident_history_flag",
+      "importance": 0.0008,
+      "importance_pct": 0.08
+    }
+  ],
+  "detailed_top_features": [
+    {
+      "feature": "delivery_mode_express",
+      "importance": 0.2022
+    },
+    {
+      "feature": "number_of_stops",
+      "importance": 0.1805
+    },
+    {
+      "feature": "driver_rating",
+      "importance": 0.1295
+    },
+    {
+      "feature": "delivery_mode_two day",
+      "importance": 0.0891
+    },
+    {
+      "feature": "delivery_mode_standard",
+      "importance": 0.0836
+    },
+    {
+      "feature": "delivery_mode_same day",
+      "importance": 0.0475
+    },
+    {
+      "feature": "weather_severity_score",
+      "importance": 0.0372
+    },
+    {
+      "feature": "distance_km",
+      "importance": 0.0336
+    },
+    {
+      "feature": "warehouse_to_customer_distance",
+      "importance": 0.0317
+    },
+    {
+      "feature": "expected_time_hours",
+      "importance": 0.0193
+    },
+    {
+      "feature": "weather_condition_stormy",
+      "importance": 0.0105
+    },
+    {
+      "feature": "order_value",
+      "importance": 0.0079
+    },
+    {
+      "feature": "package_weight_kg",
+      "importance": 0.0078
+    },
+    {
+      "feature": "road_quality_index",
+      "importance": 0.0068
+    },
+    {
+      "feature": "maintenance_score",
+      "importance": 0.0068
+    }
+  ],
+  "categorical_options": {
+    "delivery_partner": [
+      "amazon logistics",
+      "blue dart",
+      "delhivery",
+      "dhl",
+      "ecom express",
+      "ekart",
+      "fedex",
+      "shadowfax",
+      "xpressbees"
+    ],
+    "package_type": [
+      "automobile parts",
+      "clothing",
+      "cosmetics",
+      "documents",
+      "electronics",
+      "fragile items",
+      "furniture",
+      "groceries",
+      "pharmacy"
+    ],
+    "vehicle_type": [
+      "bike",
+      "ev bike",
+      "ev van",
+      "scooter",
+      "truck",
+      "van"
+    ],
+    "delivery_mode": [
+      "express",
+      "same day",
+      "standard",
+      "two day"
+    ],
+    "region": [
+      "Ahmedabad",
+      "Bangalore",
+      "Bhopal",
+      "Bhubaneswar",
+      "Chandigarh",
+      "Chennai",
+      "Delhi NCR",
+      "Guwahati",
+      "Hyderabad",
+      "Indore",
+      "Jaipur",
+      "Kochi",
+      "Kolkata",
+      "Lucknow",
+      "Mumbai",
+      "Nagpur",
+      "Patna",
+      "Pune",
+      "Raipur",
+      "Surat"
+    ],
+    "weather_condition": [
+      "clear",
+      "cold",
+      "foggy",
+      "hot",
+      "rainy",
+      "stormy"
+    ],
+    "traffic_level": [
+      "High",
+      "Low",
+      "Medium",
+      "Severe"
+    ],
+    "delivery_priority": [
+      "Critical",
+      "High",
+      "Low",
+      "Medium"
+    ],
+    "warehouse_location": [
+      "Bangalore",
+      "Delhi",
+      "Kolkata",
+      "Mumbai",
+      "Nagpur"
+    ],
+    "customer_type": [
+      "B2B",
+      "B2C"
+    ],
+    "delivery_shift": [
+      "Afternoon",
+      "Evening",
+      "Morning",
+      "Night"
+    ],
+    "operational_zone": [
+      "Central Zone",
+      "East Zone",
+      "North Zone",
+      "South Zone",
+      "West Zone"
+    ],
+    "source_city": [
+      "Ahmedabad",
+      "Bangalore",
+      "Chennai",
+      "Delhi NCR",
+      "Hyderabad",
+      "Jaipur",
+      "Kochi",
+      "Kolkata",
+      "Lucknow",
+      "Mumbai",
+      "Nagpur",
+      "Pune"
+    ],
+    "destination_city": [
+      "Ahmedabad",
+      "Bangalore",
+      "Chennai",
+      "Delhi NCR",
+      "Hyderabad",
+      "Jaipur",
+      "Kochi",
+      "Kolkata",
+      "Lucknow",
+      "Mumbai",
+      "Nagpur",
+      "Pune"
+    ],
+    "route_type": [
+      "Highway",
+      "Rural",
+      "Urban"
+    ],
+    "driver_age_group": [
+      "18-25",
+      "26-35",
+      "36-45",
+      "46-55",
+      "55+"
+    ],
+    "accident_history_flag": [
+      "No",
+      "Yes"
+    ],
+    "rush_hour_delivery": [
+      "No",
+      "Yes"
+    ],
+    "weekend_delivery": [
+      "No",
+      "Yes"
+    ],
+    "holiday_season": [
+      "No",
+      "Yes"
+    ]
+  },
+  "numerical_ranges": {
+    "distance_km": {
+      "min": 3.6,
+      "max": 297.1,
+      "mean": 150.39,
+      "median": 151.0
+    },
+    "package_weight_kg": {
+      "min": 0.67,
+      "max": 49.52,
+      "mean": 25.15,
+      "median": 25.14
+    },
+    "expected_time_hours": {
+      "min": 5.4,
+      "max": 64.9,
+      "mean": 26.27,
+      "median": 25.5
+    },
+    "driver_experience_years": {
+      "min": 1.0,
+      "max": 15.0,
+      "mean": 7.96,
+      "median": 8.0
+    },
+    "order_value": {
+      "min": 1750.75,
+      "max": 22490.48,
+      "mean": 6604.83,
+      "median": 4738.23
+    },
+    "driver_rating": {
+      "min": 1.5,
+      "max": 5.0,
+      "mean": 4.01,
+      "median": 4.0
+    },
+    "road_quality_index": {
+      "min": 35.0,
+      "max": 97.0,
+      "mean": 76.22,
+      "median": 77.0
+    },
+    "number_of_stops": {
+      "min": 1.0,
+      "max": 7.0,
+      "mean": 3.0,
+      "median": 2.0
+    },
+    "warehouse_to_customer_distance": {
+      "min": 3.24,
+      "max": 341.59,
+      "mean": 153.97,
+      "median": 152.95
+    },
+    "vehicle_capacity_utilization": {
+      "min": 45.0,
+      "max": 99.0,
+      "mean": 71.87,
+      "median": 72.0
+    },
+    "weather_severity_score": {
+      "min": 1.0,
+      "max": 5.0,
+      "mean": 2.84,
+      "median": 3.0
+    },
+    "driver_daily_deliveries": {
+      "min": 8.0,
+      "max": 44.0,
+      "mean": 25.94,
+      "median": 26.0
+    },
+    "maintenance_score": {
+      "min": 55.0,
+      "max": 97.0,
+      "mean": 80.6,
+      "median": 81.0
+    }
+  }
+}
