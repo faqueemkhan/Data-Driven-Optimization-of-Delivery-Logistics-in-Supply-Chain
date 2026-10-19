@@ -47,14 +47,17 @@ export const RouteRegionalMapModule: React.FC<RouteRegionalMapModuleProps> = ({ 
       center: [21.5, 79.5],
       zoom: 5,
       zoomControl: true,
-      attributionControl: false
+      attributionControl: true
     });
     mapInstanceRef.current = map;
 
-    // Dark theme CartoDB basemap tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    // OpenStreetMap tiles do not require an API key. CartoDB's public tile
+    // endpoint now rejects anonymous requests, leaving the map background blank.
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
-      subdomains: 'abcd',
+      // OpenStreetMap exposes the a, b, and c tile hosts (not Carto's d host).
+      subdomains: 'abc',
+      attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);
 
     const layerGroup = L.layerGroup().addTo(map);
@@ -289,6 +292,8 @@ export const RouteRegionalMapModule: React.FC<RouteRegionalMapModuleProps> = ({ 
                 <Tooltip
                   formatter={(val: any) => [`${val}%`, 'Delay Rate']}
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
+                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                  itemStyle={{ color: '#e2e8f0' }}
                 />
                 <Bar dataKey="delay_rate" fill="#f59e0b" radius={[4, 4, 0, 0]} name="Delay Rate (%)" />
               </BarChart>

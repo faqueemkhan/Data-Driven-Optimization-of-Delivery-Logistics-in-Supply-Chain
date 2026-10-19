@@ -65,7 +65,7 @@ export const DataQualityModule: React.FC<DataQualityModuleProps> = ({ report, lo
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4.5">
+        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 min-h-[116px]">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-400">Total Ingested Records</span>
             <FileSpreadsheet className="h-4 w-4 text-brand-400" />
@@ -74,7 +74,7 @@ export const DataQualityModule: React.FC<DataQualityModuleProps> = ({ report, lo
           <div className="text-xs text-slate-500 mt-1">{total_columns} Analyzed Columns</div>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4.5">
+        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 min-h-[116px]">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-400">Completeness</span>
             <CheckCircle className="h-4 w-4 text-emerald-400" />
@@ -85,7 +85,7 @@ export const DataQualityModule: React.FC<DataQualityModuleProps> = ({ report, lo
           </div>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4.5">
+        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 min-h-[116px]">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-400">Uniqueness</span>
             <CheckCircle className="h-4 w-4 text-emerald-400" />
@@ -94,7 +94,7 @@ export const DataQualityModule: React.FC<DataQualityModuleProps> = ({ report, lo
           <div className="text-xs text-slate-500 mt-1">{duplicate_records} Duplicate Rows Detected</div>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4.5">
+        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 min-h-[116px]">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-400">Rule Conformance</span>
             <CheckCircle className="h-4 w-4 text-emerald-400" />

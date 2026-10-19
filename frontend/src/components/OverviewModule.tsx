@@ -160,11 +160,20 @@ export const OverviewModule: React.FC<OverviewModuleProps> = ({ data, loading })
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={monthly_trends} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="month" stroke="#64748b" tick={{ fontSize: 11 }} />
+                <XAxis
+                  dataKey="month"
+                  stroke="#64748b"
+                  tick={{ fontSize: 10 }}
+                  interval={0}
+                  minTickGap={0}
+                  tickFormatter={(month) => month.slice(0, 3)}
+                />
                 <YAxis yAxisId="left" stroke="#64748b" tick={{ fontSize: 11 }} />
                 <YAxis yAxisId="right" orientation="right" stroke="#f43f5e" unit="%" tick={{ fontSize: 11 }} />
                 <Tooltip
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
+                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                  itemStyle={{ color: '#e2e8f0' }}
                 />
                 <Bar yAxisId="left" dataKey="deliveries" fill="#0284c7" radius={[4, 4, 0, 0]} name="Shipments" />
                 <Line yAxisId="right" type="monotone" dataKey="delay_rate" stroke="#f43f5e" strokeWidth={2.5} name="Delay Rate (%)" dot={{ r: 3 }} />
@@ -201,6 +210,8 @@ export const OverviewModule: React.FC<OverviewModuleProps> = ({ data, loading })
                 </Pie>
                 <Tooltip
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
+                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                  itemStyle={{ color: '#e2e8f0' }}
                 />
               </PieChart>
             </ResponsiveContainer>

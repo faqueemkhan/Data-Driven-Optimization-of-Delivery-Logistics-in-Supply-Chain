@@ -121,6 +121,8 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
                   <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit="%" />
                   <Tooltip
                     contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
+                    labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                    itemStyle={{ color: '#e2e8f0' }}
                   />
                   <Bar dataKey="delay_rate_pct" name="Delay Rate (%)" radius={[4, 4, 0, 0]}>
                     {partner_performance.map((p, i) => (

@@ -175,6 +175,8 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
                 <Tooltip
                   formatter={(val: any) => [`${val}%`, 'Importance']}
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
+                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                  itemStyle={{ color: '#e2e8f0' }}
                 />
                 <Bar dataKey="importance_pct" fill="#0284c7" radius={[0, 4, 4, 0]}>
                   {top10Features.map((_, index) => (
