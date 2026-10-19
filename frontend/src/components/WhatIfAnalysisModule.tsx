@@ -197,7 +197,7 @@ export const WhatIfAnalysisModule: React.FC = () => {
               <input
                 type="range"
                 min="10"
-                max="300"
+                max="1000"
                 value={params.scenario_distance_km}
                 onChange={(e) => setParams({ ...params, scenario_distance_km: Number(e.target.value) })}
                 className="w-full accent-brand-500"
