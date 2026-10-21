@@ -78,6 +78,65 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
 
   const { metrics: scores, confusion_matrix, feature_importances, leakage_prevention, training_samples, testing_samples } = metrics;
 
+  const loadScenario = (type: 'high' | 'low' | 'balanced') => {
+    if (type === 'high') {
+      setFormData(prev => ({
+        ...prev,
+        delivery_partner: 'delhivery',
+        package_type: 'electronics',
+        vehicle_type: 'bike',
+        delivery_mode: 'same day',
+        weather_condition: 'rainy',
+        traffic_level: 'Severe',
+        rush_hour_delivery: 'Yes',
+        distance_km: 195,
+        expected_time_hours: 18,
+        road_quality_index: 42,
+        number_of_stops: 4,
+        weather_severity_score: 4,
+        maintenance_score: 55,
+        driver_rating: 3.8
+      }));
+    } else if (type === 'low') {
+      setFormData(prev => ({
+        ...prev,
+        delivery_partner: 'shadowfax',
+        package_type: 'groceries',
+        vehicle_type: 'ev van',
+        delivery_mode: 'express',
+        weather_condition: 'clear',
+        traffic_level: 'Low',
+        rush_hour_delivery: 'No',
+        distance_km: 85,
+        expected_time_hours: 24,
+        road_quality_index: 92,
+        number_of_stops: 1,
+        weather_severity_score: 1,
+        maintenance_score: 95,
+        driver_experience_years: 8,
+        driver_rating: 4.9
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        delivery_partner: 'delhivery',
+        package_type: 'electronics',
+        vehicle_type: 'van',
+        delivery_mode: 'standard',
+        weather_condition: 'clear',
+        traffic_level: 'Medium',
+        rush_hour_delivery: 'No',
+        distance_km: 150,
+        expected_time_hours: 22,
+        road_quality_index: 75,
+        number_of_stops: 2,
+        weather_severity_score: 2,
+        maintenance_score: 80,
+        driver_rating: 4.2
+      }));
+    }
+  };
+
   const handlePredict = async (e: React.FormEvent) => {
     e.preventDefault();
     setPredicting(true);
@@ -234,6 +293,37 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
         <p className="text-xs text-slate-400 mb-6">
           Input planned dispatch parameters to evaluate real-time delay probability, determine risk level, and inspect actionable dispatch adjustments.
         </p>
+
+        {/* 1-Click Quick Preset Buttons */}
+        <div className="mb-6 p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-2 text-xs text-slate-300 font-semibold">
+            <Award className="h-4 w-4 text-brand-400" />
+            <span>Demonstration Test Presets:</span>
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => loadScenario('high')}
+              className="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 font-medium transition"
+            >
+              🚨 High Delay Risk (Storm + Severe Traffic)
+            </button>
+            <button
+              type="button"
+              onClick={() => loadScenario('low')}
+              className="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium transition"
+            >
+              ✅ Low Delay Risk (EV Express + Clear Route)
+            </button>
+            <button
+              type="button"
+              onClick={() => loadScenario('balanced')}
+              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium transition"
+            >
+              🔄 Standard Baseline
+            </button>
+          </div>
+        </div>
 
         <form onSubmit={handlePredict} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">

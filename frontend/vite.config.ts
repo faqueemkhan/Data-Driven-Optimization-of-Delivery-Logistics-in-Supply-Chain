@@ -16,5 +16,18 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  build: {
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-charts': ['recharts'],
+          'vendor-map': ['leaflet'],
+          'vendor-icons': ['lucide-react']
+        }
+      }
+    }
   }
 });

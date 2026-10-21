@@ -11,6 +11,10 @@ router = APIRouter(prefix="/overview", tags=["Overview"])
 @router.get("/")
 def get_overview_dashboard():
     store = DataStore.get_instance()
+    cached = store.get_cached("overview")
+    if cached is not None:
+        return cached
+
     df = store.get_data()
 
     total_deliveries = int(len(df))
@@ -134,7 +138,7 @@ def get_overview_dashboard():
                 "delay_rate": round((int(row["delayed"]) / cnt) * 100, 2)
             })
 
-    return {
+    result = {
         "kpis": {
             "total_deliveries": total_deliveries,
             "on_time_deliveries": on_time_count,
@@ -158,3 +162,6 @@ def get_overview_dashboard():
         "vehicle_breakdown": vehicle_stats,
         "priority_distribution": priority_stats
     }
+
+    store.set_cached("overview", result)
+    return result

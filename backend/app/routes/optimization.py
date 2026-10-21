@@ -11,6 +11,10 @@ router = APIRouter(prefix="/optimization", tags=["Optimization Recommendations"]
 @router.get("/")
 def get_optimization_recommendations():
     store = DataStore.get_instance()
+    cached = store.get_cached("optimization")
+    if cached is not None:
+        return cached
+
     df = store.get_data()
 
     total_deliveries = len(df)
@@ -105,7 +109,7 @@ def get_optimization_recommendations():
 
     total_projected_savings = fuel_saved_ev + rush_penalties + 1200000.0
 
-    return {
+    result = {
         "summary": {
             "total_deliveries_analyzed": total_deliveries,
             "projected_annual_cost_savings": round(total_projected_savings, 2),
@@ -114,3 +118,6 @@ def get_optimization_recommendations():
         },
         "recommendations": recommendations
     }
+
+    store.set_cached("optimization", result)
+    return result

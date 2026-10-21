@@ -42,10 +42,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, health 
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-base tracking-tight text-white sm:text-lg">
-                  Logistic in  <span className="text-brand-500">Supply Chain</span>
+                  LogiOptima <span className="text-brand-500">Supply Chain AI</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 uppercase tracking-wider">
-                  R
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 uppercase tracking-wider font-mono">
+                  v1.0
                 </span>
               </div>
               <p className="text-xs text-slate-400 hidden md:block line-clamp-1">

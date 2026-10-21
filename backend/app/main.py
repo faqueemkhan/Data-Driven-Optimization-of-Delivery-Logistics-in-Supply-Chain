@@ -10,13 +10,13 @@ from fastapi.responses import JSONResponse
 import logging
 
 from app.data_store import DataStore
-from app.routes.overview import router as overview_router
+from app.routes.overview import router as overview_router, get_overview_dashboard
 from app.routes.quality import router as quality_router
 from app.routes.prediction import router as prediction_router
-from app.routes.routes_geo import router as routes_geo_router
-from app.routes.performance import router as performance_router
+from app.routes.routes_geo import router as routes_geo_router, get_routes_and_regional_analysis
+from app.routes.performance import router as performance_router, get_logistics_performance
 from app.routes.whatif import router as whatif_router
-from app.routes.optimization import router as optimization_router
+from app.routes.optimization import router as optimization_router, get_optimization_recommendations
 from app.routes.deliveries import router as deliveries_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -39,10 +39,18 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup_event():
-    logger.info("Initializing DataStore and warming ML inference caches...")
+    logger.info("Initializing DataStore and warming caches...")
     store = DataStore.get_instance()
     df = store.get_data()
-    logger.info(f"System ready with {len(df)} logistics records.")
+    # Warm up in-memory analytics caches for sub-5ms responses
+    try:
+        get_overview_dashboard()
+        get_logistics_performance()
+        get_routes_and_regional_analysis()
+        get_optimization_recommendations()
+        logger.info(f"System ready with {len(df)} logistics records. Caches fully primed.")
+    except Exception as e:
+        logger.warning(f"Cache priming warning: {e}")
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

@@ -69,6 +69,13 @@ export const DeliveriesExplorerModule: React.FC = () => {
     fetchDeliveries();
   }, [page, partner, vehicleType, traffic, weather, zone, delayed, sortBy, sortOrder]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchDeliveries();
+    }, 350);
+    return () => clearTimeout(handler);
+  }, [search]);
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);

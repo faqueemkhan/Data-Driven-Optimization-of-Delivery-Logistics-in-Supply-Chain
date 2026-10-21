@@ -27,6 +27,7 @@ class DataStore:
         self.quality_report: Optional[Dict[str, Any]] = None
         self.ml_pipeline = None
         self.model_metadata: Optional[Dict[str, Any]] = None
+        self._cache: Dict[str, Any] = {}
 
         self.load_all()
 
@@ -81,3 +82,9 @@ class DataStore:
         if self.model_metadata is None:
             self.load_all()
         return self.model_metadata or {}
+
+    def get_cached(self, key: str) -> Optional[Any]:
+        return self._cache.get(key)
+
+    def set_cached(self, key: str, value: Any):
+        self._cache[key] = value

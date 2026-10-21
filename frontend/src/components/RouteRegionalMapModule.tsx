@@ -138,7 +138,14 @@ export const RouteRegionalMapModule: React.FC<RouteRegionalMapModuleProps> = ({ 
       });
     }
 
+    const timer = setTimeout(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 200);
+
     return () => {
+      clearTimeout(timer);
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;

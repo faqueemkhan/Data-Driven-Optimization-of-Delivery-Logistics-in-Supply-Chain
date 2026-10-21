@@ -12,11 +12,12 @@ import {
   FilterOptions
 } from '../types';
 
-const API_BASE = '/api';
+const BASE_HOST = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE = `${BASE_HOST}/api`;
 
 export const api = {
   async getHealth(): Promise<HealthStatus> {
-    const res = await fetch('/health');
+    const res = await fetch(`${BASE_HOST}/health`);
     if (!res.ok) throw new Error('Failed to fetch system health');
     return res.json();
   },

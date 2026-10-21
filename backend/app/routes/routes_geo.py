@@ -12,6 +12,10 @@ router = APIRouter(prefix="/routes-geo", tags=["Route & Regional Analysis"])
 @router.get("/")
 def get_routes_and_regional_analysis():
     store = DataStore.get_instance()
+    cached = store.get_cached("routes_geo")
+    if cached is not None:
+        return cached
+
     df = store.get_data()
 
     # 1. Warehouses with coordinates and operational stats
@@ -171,7 +175,7 @@ def get_routes_and_regional_analysis():
             "avg_time_hours": round(float(r["avg_time"]), 2)
         })
 
-    return {
+    result = {
         "warehouses": warehouses,
         "source_cities": source_cities,
         "destination_cities": destination_cities,
@@ -180,3 +184,6 @@ def get_routes_and_regional_analysis():
         "route_type_comparison": route_types,
         "stops_impact": stops_impact
     }
+
+    store.set_cached("routes_geo", result)
+    return result

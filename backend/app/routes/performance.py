@@ -11,6 +11,10 @@ router = APIRouter(prefix="/performance", tags=["Performance Analysis"])
 @router.get("/")
 def get_logistics_performance():
     store = DataStore.get_instance()
+    cached = store.get_cached("performance")
+    if cached is not None:
+        return cached
+
     df = store.get_data()
 
     # 1. Delivery Partner Performance
@@ -139,10 +143,13 @@ def get_logistics_performance():
             "delay_rate_pct": round((int(r["delayed"]) / vol) * 100, 2)
         })
 
-    return {
+    result = {
         "partner_performance": partner_perf,
         "vehicle_performance": vehicle_perf,
         "weather_impact": weather_perf,
         "traffic_impact": traffic_perf,
         "rush_hour_comparison": rush_hour_comp
     }
+
+    store.set_cached("performance", result)
+    return result

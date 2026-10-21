@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   SlidersHorizontal,
+  Sparkles,
   RefreshCw,
   ArrowRight,
   ShieldAlert,
@@ -49,8 +50,67 @@ export const WhatIfAnalysisModule: React.FC = () => {
     }
   };
 
+  const presets = [
+    {
+      name: '🌱 Green Fleet Conversion',
+      desc: 'EV Van on medium corridor',
+      apply: () => setParams(prev => ({
+        ...prev,
+        scenario_vehicle_type: 'ev van',
+        scenario_stops: 1,
+        scenario_traffic_level: 'Medium',
+        scenario_rush_hour: 'No'
+      }))
+    },
+    {
+      name: '⛈️ Monsoon & Peak Shock',
+      desc: 'Severe storm + rush hour traffic',
+      apply: () => setParams(prev => ({
+        ...prev,
+        scenario_weather_condition: 'rainy',
+        scenario_traffic_level: 'Severe',
+        scenario_rush_hour: 'Yes'
+      }))
+    },
+    {
+      name: '⚡ Direct Express Route',
+      desc: 'Off-peak with 0 intermediate stops',
+      apply: () => setParams(prev => ({
+        ...prev,
+        scenario_distance_km: Math.max(30, prev.base_distance_km - 20),
+        scenario_stops: 0,
+        scenario_traffic_level: 'Low',
+        scenario_rush_hour: 'No',
+        scenario_vehicle_type: 'van'
+      }))
+    },
+    {
+      name: '🔄 Reset Reference',
+      desc: 'Default comparison params',
+      apply: () => setParams({
+        base_distance_km: 150,
+        base_traffic_level: 'Medium',
+        base_weather_condition: 'clear',
+        base_vehicle_type: 'truck',
+        base_stops: 2,
+        base_rush_hour: 'No',
+        base_partner: 'delhivery',
+        scenario_distance_km: 150,
+        scenario_traffic_level: 'High',
+        scenario_weather_condition: 'rainy',
+        scenario_vehicle_type: 'ev van',
+        scenario_stops: 1,
+        scenario_rush_hour: 'No',
+        scenario_partner: 'delhivery'
+      })
+    }
+  ];
+
   useEffect(() => {
-    runSimulation();
+    const timer = setTimeout(() => {
+      runSimulation();
+    }, 280);
+    return () => clearTimeout(timer);
   }, [params]);
 
   return (
@@ -81,6 +141,30 @@ export const WhatIfAnalysisModule: React.FC = () => {
           <p className="text-sm text-slate-300 mt-1 max-w-3xl">
             Simulate and compare how altering vehicle modality, route distance, traffic levels, and weather severity impacts transit duration, delay risk, operating costs, and carbon emissions.
           </p>
+        </div>
+      </div>
+
+            {/* Quick Scenario Preset Controls */}
+      <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-brand-400" />
+            <span>One-Click Simulation Presets</span>
+          </span>
+          <span className="text-[11px] text-slate-500 hidden sm:inline">Instant side-by-side what-if testing</span>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+          {presets.map((p, idx) => (
+            <button
+              key={idx}
+              onClick={p.apply}
+              type="button"
+              className="px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-brand-500/50 text-left transition text-xs group"
+            >
+              <div className="font-semibold text-slate-200 group-hover:text-brand-300 truncate">{p.name}</div>
+              <div className="text-[10px] text-slate-400 truncate mt-0.5">{p.desc}</div>
+            </button>
+          ))}
         </div>
       </div>
 
