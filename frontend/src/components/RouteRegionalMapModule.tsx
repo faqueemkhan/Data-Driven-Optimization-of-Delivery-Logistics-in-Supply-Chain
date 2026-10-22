@@ -237,77 +237,62 @@ export const RouteRegionalMapModule: React.FC<RouteRegionalMapModuleProps> = ({ 
         </div>
       </div>
 
-      {/* Route Type & Stops Analysis */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Route Type Comparison */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-base font-bold text-white">Route Type Dynamics: Highway vs Urban vs Rural</h2>
-              <p className="text-xs text-slate-400">Transit velocity, road quality, and delay rate correlation</p>
-            </div>
-            <Navigation className="h-4 w-4 text-brand-400" />
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            {route_type_comparison.map((rt) => (
-              <div key={rt.route_type} className="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3.5 flex flex-col justify-between">
-                <div>
-                  <span className="text-xs font-bold text-brand-400 tracking-wide uppercase">{rt.route_type}</span>
-                  <div className="text-xl font-black text-white mt-1 font-mono">{rt.delay_rate}%</div>
-                  <div className="text-[10px] text-slate-400">Delay Rate</div>
-                </div>
-                <div className="mt-3 pt-2 border-t border-slate-700/40 space-y-1 text-[11px] text-slate-300">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Avg Speed:</span>
-                    <span className="font-mono text-white">{rt.avg_speed_kmh} km/h</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Road Quality:</span>
-                    <span className="font-mono text-white">{rt.avg_road_quality}/100</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Avg Stops:</span>
-                    <span className="font-mono text-white">{rt.avg_stops}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">GPS Dev:</span>
-                    <span className="font-mono text-white">{rt.avg_deviation_km} km</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Number of Stops Impact on Delays */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-base font-bold text-white">Waypoint Stops vs Delay Escalation</h2>
-              <p className="text-xs text-slate-400">Impact of multi-stop consignments on delivery delay probability</p>
-            </div>
-            <Gauge className="h-4 w-4 text-amber-400" />
-          </div>
-
-          <div className="h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stops_impact} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="stops" stroke="#64748b" tick={{ fontSize: 11 }} label={{ value: 'Stops', position: 'insideBottom', offset: -5 }} />
-                <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit="%" />
-                <Tooltip
-                  formatter={(val: any) => [`${val}%`, 'Delay Rate']}
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
-                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
-                  itemStyle={{ color: '#e2e8f0' }}
-                />
-                <Bar dataKey="delay_rate" fill="#f59e0b" radius={[4, 4, 0, 0]} name="Delay Rate (%)" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+      
+{/* Route Type & Stops Analysis */}
+<div className="w-full flex justify-center">
+  <div className="w-full max-w-[900px] bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+    <div className="flex items-center justify-between mb-4">
+      <div>
+        <h2 className="text-base font-bold text-white">
+          Route Type Dynamics: Highway vs Urban vs Rural
+        </h2>
+        <p className="text-xs text-slate-400">
+          Transit velocity, road quality, and delay rate correlation
+        </p>
       </div>
+      <Navigation className="h-4 w-4 text-brand-400" />
+    </div>
+
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {route_type_comparison.map((rt) => (
+        <div
+          key={rt.route_type}
+          className="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3.5 flex flex-col justify-between"
+        >
+          <div>
+            <span className="text-xs font-bold text-brand-400 tracking-wide uppercase">
+              {rt.route_type}
+            </span>
+            <div className="text-xl font-black text-white mt-1 font-mono">
+              {rt.delay_rate}%
+            </div>
+            <div className="text-[10px] text-slate-400">Delay Rate</div>
+          </div>
+
+          <div className="mt-3 pt-2 border-t border-slate-700/40 space-y-1 text-[11px] text-slate-300">
+            <div className="flex justify-between gap-2">
+              <span className="text-slate-400">Avg Speed:</span>
+              <span className="font-mono text-white">{rt.avg_speed_kmh} km/h</span>
+            </div>
+            <div className="flex justify-between gap-2">
+              <span className="text-slate-400">Road Quality:</span>
+              <span className="font-mono text-white">{rt.avg_road_quality}/100</span>
+            </div>
+            <div className="flex justify-between gap-2">
+              <span className="text-slate-400">Avg Stops:</span>
+              <span className="font-mono text-white">{rt.avg_stops}</span>
+            </div>
+            <div className="flex justify-between gap-2">
+              <span className="text-slate-400">GPS Dev:</span>
+              <span className="font-mono text-white">{rt.avg_deviation_km} km</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
     </div>
   );
 };

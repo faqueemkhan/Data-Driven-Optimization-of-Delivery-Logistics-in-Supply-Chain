@@ -114,23 +114,61 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
             <h2 className="text-base font-bold text-white mb-1">Partner SLA Reliability & Delay Rate Comparison</h2>
             <p className="text-xs text-slate-400 mb-4">Delay rate (%) across all 3PL partners with delivery volume weights</p>
             <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={partner_performance} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="partner" stroke="#64748b" tick={{ fontSize: 11 }} />
-                  <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit="%" />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
-                    labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
-                    itemStyle={{ color: '#e2e8f0' }}
-                  />
-                  <Bar dataKey="delay_rate_pct" name="Delay Rate (%)" radius={[4, 4, 0, 0]}>
-                    {partner_performance.map((p, i) => (
-                      <Cell key={`cell-${i}`} fill={p.delay_rate_pct > 27 ? '#f43f5e' : '#0284c7'} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+             
+<ResponsiveContainer width="100%" height="100%">
+  <BarChart
+    data={[...partner_performance].sort(
+      (a, b) => a.delay_rate_pct - b.delay_rate_pct
+    )}
+    margin={{ top: 10, right: 20, left: -10, bottom: 0 }}
+    barCategoryGap="10%"
+  >
+    <CartesianGrid
+      strokeDasharray="3 3"
+      stroke="#1e293b"
+      vertical={false}
+    />
+
+    <XAxis
+      dataKey="partner"
+      stroke="#64748b"
+      tick={{ fontSize: 11, fill: '#94a3b8' }}
+      tickLine={false}
+      axisLine={false}
+    />
+
+    <YAxis
+      stroke="#64748b"
+      tick={{ fontSize: 11, fill: '#94a3b8' }}
+      tickLine={false}
+      axisLine={false}
+      unit="%"
+    />
+
+    <Tooltip
+      contentStyle={{
+        backgroundColor: '#0f172a',
+        border: '1px solid #334155',
+        borderRadius: '8px',
+        fontSize: '12px'
+      }}
+      labelStyle={{
+        color: '#e2e8f0',
+        fontWeight: 700
+      }}
+      itemStyle={{ color: '#38bdf8' }}
+    />
+
+    <Bar
+      dataKey="delay_rate_pct"
+      name="Delay Rate (%)"
+      fill="#38bdf8"
+      radius={[4, 4, 0, 0]}
+      maxBarSize={18}
+    />
+  </BarChart>
+</ResponsiveContainer>
+
             </div>
           </div>
 
@@ -263,34 +301,57 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
         </div>
       )}
 
-      {/* Tab 4: Traffic */}
-      {activeTab === 'traffic' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {traffic_impact.map((t) => (
-              <div key={t.traffic_level} className="bg-slate-900/80 border border-slate-800 rounded-xl p-4.5">
-                <span className="text-xs font-bold text-slate-400 uppercase">{t.traffic_level} Traffic</span>
-                <div className="text-2xl font-black text-white mt-1 font-mono">{t.delay_rate_pct}%</div>
-                <div className="text-[11px] text-slate-500 mt-1">Delay Rate</div>
-                <div className="mt-3 pt-2 border-t border-slate-800 text-xs space-y-1">
-                  <div className="flex justify-between text-slate-300">
-                    <span className="text-slate-400">Delay Added:</span>
-                    <span className="font-mono font-bold text-amber-400">{t.avg_traffic_delay_mins} mins</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span className="text-slate-400">Avg Total Time:</span>
-                    <span className="font-mono">{t.avg_time_hours} hrs</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span className="text-slate-400">Fuel Expenditure:</span>
-                    <span className="font-mono">₹{t.avg_fuel_cost.toFixed(0)}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+      
+{/* Tab 4: Traffic */}
+{activeTab === 'traffic' && (
+  <div className="space-y-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+      {traffic_impact.map((t) => (
+        <div
+          key={t.traffic_level}
+          className="flex flex-col min-w-0 h-full bg-slate-900/80 border border-slate-800 rounded-xl p-4"
+        >
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+            {t.traffic_level} Traffic
+          </span>
+
+          <div className="text-2xl font-black text-white mt-2 font-mono leading-tight">
+            {t.delay_rate_pct}%
+          </div>
+
+          <div className="text-[11px] text-slate-500 mt-1">
+            Delay Rate
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-slate-800 text-xs space-y-3 flex-1">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-slate-400">Delay Added:</span>
+              <span className="font-mono font-bold text-amber-400 whitespace-nowrap">
+                {t.avg_traffic_delay_mins} mins
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-slate-400">Avg Total Time:</span>
+              <span className="font-mono text-white whitespace-nowrap">
+                {t.avg_time_hours} hrs
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-slate-400">Fuel Expenditure:</span>
+              <span className="font-mono text-white whitespace-nowrap">
+                ₹{t.avg_fuel_cost.toFixed(0)}
+              </span>
+            </div>
           </div>
         </div>
-      )}
+      ))}
+    </div>
+  </div>
+)}
+
+    
     </div>
   );
 };

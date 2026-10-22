@@ -42,11 +42,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, health 
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-base tracking-tight text-white sm:text-lg">
-                  LogiOptima <span className="text-brand-500">Supply Chain AI</span>
+                  LogiOptima <span className="text-brand-500">For Supply Chain</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 uppercase tracking-wider font-mono">
+              { /* <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 uppercase tracking-wider font-mono">
                   v1.0
                 </span>
+                */}
               </div>
               <p className="text-xs text-slate-400 hidden md:block line-clamp-1">
                 Data-Driven Optimization of Delivery Logistics in Supply Chain
@@ -54,24 +55,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, health 
             </div>
           </div>
 
-          {/* System Health Status */}
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-xs">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-slate-300 font-medium hidden sm:inline">Dataset:</span>
-              <span className="text-white font-semibold">
-                {health?.dataset_rows ? `${health.dataset_rows.toLocaleString()} Records` : 'Active'}
-              </span>
-              {health?.ml_model_loaded && (
-                <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.2 rounded font-mono">
-                  Model Ready
-                </span>
-              )}
-            </div>
-          </div>
+         {/* Login and Sign In Boxes */}  
+<div className="flex items-center gap-2">
+  <button className="px-3 py-1 rounded-md border border-white/30 text-white transition-all duration-300 hover:bg-white hover:text-slate-950 hover:border-white hover:shadow-lg hover:shadow-white/10">
+    Login
+  </button>
+
+  <button className="px-3 py-1 rounded-md border border-white/30 text-white transition-all duration-300 hover:bg-white hover:text-slate-950 hover:border-white hover:shadow-lg hover:shadow-white/10">
+    Sign In
+  </button>
+</div>
         </div>
 
         {/* Navigation Tabs Bar */}

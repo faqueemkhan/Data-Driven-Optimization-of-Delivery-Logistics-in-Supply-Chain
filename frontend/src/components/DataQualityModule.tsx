@@ -50,7 +50,9 @@ export const DataQualityModule: React.FC<DataQualityModuleProps> = ({ report, lo
           </p>
         </div>
 
+        
         {/* Quality Score Badge */}
+        {/*
         <div className="flex items-center space-x-4 bg-slate-900/90 border border-slate-700/60 rounded-2xl p-4 px-6 shadow-inner">
           <div className="text-center">
             <div className="text-3xl sm:text-4xl font-black text-emerald-400">
@@ -61,8 +63,9 @@ export const DataQualityModule: React.FC<DataQualityModuleProps> = ({ report, lo
             </div>
           </div>
         </div>
-      </div>
-
+      
+            */}
+            </div>
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-5 min-h-[116px]">

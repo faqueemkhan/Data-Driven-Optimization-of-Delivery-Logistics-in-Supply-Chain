@@ -146,21 +146,16 @@ export default function App() {
         </Suspense>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 mt-12 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <span className="font-bold text-slate-400">LogiOptima AI</span> — Data-Driven Optimization of Delivery Logistics in Supply Chain
-          </div>
-          <div className="flex items-center space-x-4 text-[11px]">
-            <span>FastAPI + Scikit-Learn</span>
-            <span>•</span>
-            <span>React + TypeScript + Tailwind</span>
-            <span>•</span>
-            <span>25,000 Deliveries Dataset</span>
-          </div>
-        </div>
-      </footer>
+      
+{/* Footer */}
+<footer className="border-t border-slate-900 bg-slate-950 py-6 mt-12">
+  <div className="max-w-7xl mx-auto px-4 text-center">
+    <h2 className="text-base sm:text-lg font-bold text-white">
+      Data-Driven Optimization of Delivery Logistics in Supply Chain
+    </h2>
+  </div>
+</footer>
+
     </div>
   );
 }

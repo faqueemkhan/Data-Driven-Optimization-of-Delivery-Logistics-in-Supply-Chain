@@ -115,7 +115,8 @@ export const WhatIfAnalysisModule: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Simulation Disclaimer Banner */}
+        {/* Simulation Disclaimer Banner */}
+        {/*
       <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4.5 text-xs text-amber-200 flex items-start space-x-3 shadow-lg">
         <ShieldAlert className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
         <div>
@@ -127,7 +128,7 @@ export const WhatIfAnalysisModule: React.FC = () => {
           </p>
         </div>
       </div>
-
+            */}
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
         <div>
