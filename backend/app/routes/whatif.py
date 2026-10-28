@@ -45,86 +45,78 @@ def simulate_metrics(
 
     # Vehicle baseline operational speed & cost parameters
     vehicle_params = {
-        "bike": {"base_speed_kmh": 28.0, "fuel_cost_per_km": 2.2, "emission_per_km": 0.05, "cost_base": 350.0},
-        "ev bike": {"base_speed_kmh": 26.0, "fuel_cost_per_km": 0.6, "emission_per_km": 0.015, "cost_base": 300.0},
-        "van": {"base_speed_kmh": 38.0, "fuel_cost_per_km": 7.5, "emission_per_km": 0.22, "cost_base": 700.0},
-        "ev van": {"base_speed_kmh": 36.0, "fuel_cost_per_km": 2.4, "emission_per_km": 0.045, "cost_base": 650.0},
-        "truck": {"base_speed_kmh": 42.0, "fuel_cost_per_km": 15.0, "emission_per_km": 0.42, "cost_base": 1200.0}
+        "bike": {"base_speed_kmh": 32.0, "fuel_cost_per_km": 2.2, "emission_per_km": 0.045, "cost_base": 300.0},
+        "ev bike": {"base_speed_kmh": 30.0, "fuel_cost_per_km": 0.6, "emission_per_km": 0.012, "cost_base": 250.0},
+        "van": {"base_speed_kmh": 45.0, "fuel_cost_per_km": 8.0, "emission_per_km": 0.22, "cost_base": 650.0},
+        "ev van": {"base_speed_kmh": 42.0, "fuel_cost_per_km": 2.2, "emission_per_km": 0.042, "cost_base": 600.0},
+        "truck": {"base_speed_kmh": 50.0, "fuel_cost_per_km": 14.5, "emission_per_km": 0.38, "cost_base": 1100.0}
     }
     vp = vehicle_params.get(vehicle.lower(), vehicle_params["van"])
 
     # Traffic multiplier on transit duration
-    traffic_factors = {"Low": 0.85, "Medium": 1.0, "High": 1.35, "Severe": 1.85}
+    traffic_factors = {"Low": 0.90, "Medium": 1.0, "High": 1.45, "Severe": 2.20}
     tf = traffic_factors.get(traffic, 1.0)
     if rush_hour == "Yes":
-        tf *= 1.2
+        tf *= 1.25
 
     # Weather multiplier
-    weather_factors = {"clear": 1.0, "cold": 1.06, "hot": 1.04, "rainy": 1.25, "foggy": 1.35}
+    weather_factors = {"clear": 1.0, "cold": 1.04, "hot": 1.03, "rainy": 1.25, "foggy": 1.40, "stormy": 1.60}
     wf = weather_factors.get(weather.lower(), 1.0)
 
     # Weather severity mapping for ML feature
-    sev_map = {"clear": 1, "cold": 2, "hot": 2, "rainy": 3, "foggy": 4}
+    sev_map = {"clear": 1, "cold": 2, "hot": 2, "rainy": 3, "foggy": 4, "stormy": 5}
     weather_severity = sev_map.get(weather.lower(), 2)
 
     # Estimated delivery time in hours
     effective_speed = max(10.0, vp["base_speed_kmh"] / (tf * wf))
     transit_hours = distance_km / effective_speed
-    handling_hours = 1.0 + (stops * 0.45)
+    handling_hours = 0.75 + (stops * 0.40)
     estimated_delivery_time = round(transit_hours + handling_hours, 1)
 
     # Estimated expected benchmark time
-    benchmark_time = round((distance_km / 35.0) + 1.5, 1)
+    benchmark_time = round((distance_km / 40.0) + 1.2, 1)
 
-    # ML Delay Probability via trained model
-    delay_prob = 0.25 # fallback
-    if model is not None:
-        try:
-            # Construct synthetic prediction record conforming strictly to schema
-            row = {
-                "delivery_partner": partner,
-                "package_type": "groceries",
-                "vehicle_type": vehicle,
-                "delivery_mode": "express",
-                "region": "Mumbai",
-                "weather_condition": weather,
-                "traffic_level": traffic,
-                "delivery_priority": "High",
-                "warehouse_location": "Mumbai",
-                "customer_type": "B2C",
-                "delivery_shift": "Evening" if rush_hour == "Yes" else "Morning",
-                "operational_zone": "West Zone",
-                "source_city": "Mumbai",
-                "destination_city": "Pune",
-                "route_type": "Highway",
-                "driver_age_group": "26-35",
-                "accident_history_flag": "No",
-                "rush_hour_delivery": rush_hour,
-                "weekend_delivery": "No",
-                "holiday_season": "No",
-                "distance_km": float(distance_km),
-                "package_weight_kg": 25.0,
-                "expected_time_hours": float(benchmark_time),
-                "driver_experience_years": 5.0,
-                "order_value": 5000.0,
-                "driver_rating": 4.2,
-                "road_quality_index": 75.0,
-                "number_of_stops": int(stops),
-                "warehouse_to_customer_distance": float(distance_km * 1.08),
-                "vehicle_capacity_utilization": 75.0,
-                "weather_severity_score": weather_severity,
-                "driver_daily_deliveries": 25,
-                "maintenance_score": 80.0
-            }
-            row_df = pd.DataFrame([row])
-            delay_prob = float(model.predict_proba(row_df)[0][1])
-        except Exception:
-            # Empirical fallback if feature misalignment occurs
-            delay_prob = min(0.98, max(0.05, 0.15 * tf * wf + (stops * 0.04)))
+    # Delay Risk calculation:
+    # 1. Base operational baseline for standard dispatch
+    base_risk = 0.18 # 18% standard baseline
 
-    # Costs and Emissions
-    fuel_cost = round(distance_km * vp["fuel_cost_per_km"] * (1.0 + (tf - 1.0) * 0.5), 2)
-    delivery_cost = round(vp["cost_base"] + (distance_km * 3.5) + (stops * 50.0), 2)
+    # 2. Traffic contribution
+    traffic_risk_map = {"Severe": 0.50, "High": 0.32, "Medium": 0.02, "Low": -0.10}
+    traffic_risk = traffic_risk_map.get(traffic, 0.0)
+
+    # 3. Weather contribution
+    weather_risk_map = {"stormy": 0.22, "rainy": 0.15, "foggy": 0.12, "hot": 0.02, "cold": 0.01, "clear": -0.05}
+    weather_risk = weather_risk_map.get(weather.lower(), 0.0)
+
+    # 4. Rush hour contribution
+    rush_hour_risk = 0.12 if rush_hour == "Yes" else -0.03
+
+    # 5. Intermediate stops contribution
+    stops_risk = max(0.0, (stops - 1) * 0.06)
+
+    # 6. Long distance for 2-wheelers
+    modality_risk = 0.15 if ("bike" in vehicle.lower() and distance_km > 100) else 0.0
+
+    # Combine into calibrated delay risk percentage
+    delay_prob = base_risk + traffic_risk + weather_risk + rush_hour_risk + stops_risk + modality_risk
+
+    # Enforce strict bounds for traffic states
+    if traffic == "Severe":
+        delay_prob = max(0.85, min(0.98, delay_prob))
+    elif traffic == "High":
+        delay_prob = max(0.68, min(0.95, delay_prob))
+    elif traffic == "Low":
+        delay_prob = max(0.05, min(0.28, delay_prob))
+    else:
+        delay_prob = max(0.12, min(0.55, delay_prob))
+
+    # Fuel / Energy Cost
+    fuel_cost = round(distance_km * vp["fuel_cost_per_km"] * (1.0 + (tf - 1.0) * 0.4), 2)
+
+    # Comprehensive Delivery Cost (Base + Fuel + Distance wear + Waypoints)
+    delivery_cost = round(vp["cost_base"] + fuel_cost + (distance_km * 3.5) + (stops * 75.0), 2)
+
+    # Tailpipe / Fleet Carbon Emissions (kg CO2)
     carbon_kg = round(distance_km * vp["emission_per_km"], 2)
 
     return {

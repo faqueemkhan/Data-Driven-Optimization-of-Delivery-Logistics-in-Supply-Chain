@@ -73,16 +73,72 @@ def predict_delivery_delay(input_data: PredictionInput):
     input_df = pd.DataFrame([input_dict])
 
     try:
-        prob = float(model.predict_proba(input_df)[0][1])
-        prediction = int(prob >= 0.5)
+        raw_prob = float(model.predict_proba(input_df)[0][1])
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Inference error: {str(e)}")
+
+    # 1. SLA Compression & Speed Pressure:
+    # Required Speed (km/h) = Distance (km) / SLA Target Time (hours)
+    req_speed = input_data.distance_km / max(1.0, input_data.expected_time_hours)
+    # Benchmark operational velocity in domestic transit is ~20 km/h
+    speed_factor = (req_speed - 20.0) / 25.0
+    speed_delta = max(-0.25, min(0.35, speed_factor * 0.28))
+
+    # 2. Route Distance Scaling:
+    # Longer distance routes compound exposure to road disruptions, detours, and breakdowns
+    dist_delta = ((input_data.distance_km - 120.0) / 250.0) * 0.22
+
+    # 3. Intermediate Stops Dwell Time:
+    # Each stop adds dwell time (parking, unloading, customer signoff, traffic re-entry)
+    stops_delta = (input_data.number_of_stops - 2) * 0.06
+
+    # 4. Traffic Congestion Factor:
+    traffic_deltas = {
+        "Severe": 0.38,
+        "High": 0.22,
+        "Medium": 0.00,
+        "Low": -0.16
+    }
+    traffic_delta = traffic_deltas.get(input_data.traffic_level, 0.0)
+
+    # 5. Weather Conditions:
+    weather_deltas = {
+        "stormy": 0.20,
+        "rainy": 0.14,
+        "foggy": 0.12,
+        "hot": 0.02,
+        "cold": 0.01,
+        "clear": -0.06
+    }
+    weather_delta = weather_deltas.get(input_data.weather_condition.lower(), 0.0)
+
+    # 6. Rush Hour Interaction:
+    rush_delta = 0.12 if input_data.rush_hour_delivery == "Yes" else -0.04
+
+    # 7. Road Quality:
+    road_delta = ((70.0 - input_data.road_quality_index) / 100.0) * 0.15
+
+    # 8. Driver Experience & Rating:
+    driver_delta = ((4.0 - input_data.driver_rating) / 5.0) * 0.18
+
+    # 9. Modality Range Factor (e.g. 2-wheelers on long-distance routes):
+    modality_delta = 0.12 if (input_data.vehicle_type == "bike" and input_data.distance_km > 100) else 0.0
+
+    # Combine operational physics with ML anchor:
+    # Base baseline probability is 25%
+    base_anchor = 0.25
+    calibrated_prob = base_anchor + speed_delta + dist_delta + stops_delta + traffic_delta + weather_delta + rush_delta + road_delta + driver_delta + modality_delta
+
+    # Blend 15% ML model representation + 85% calibrated physics
+    prob = 0.15 * raw_prob + 0.85 * calibrated_prob
+    prob = max(0.02, min(0.98, prob))
+    prediction = int(prob >= 0.45)
 
     # Determine risk tier
     if prob < 0.30:
         risk_level = "Low Delay Risk"
         risk_color = "emerald"
-    elif prob < 0.65:
+    elif prob < 0.60:
         risk_level = "Moderate Delay Risk"
         risk_color = "amber"
     else:
@@ -91,29 +147,54 @@ def predict_delivery_delay(input_data: PredictionInput):
 
     # Identify primary contributing risk drivers
     drivers = []
-    if input_data.traffic_level in ["High", "Severe"]:
-        drivers.append(f"Elevated traffic congestion ({input_data.traffic_level} level) along dispatch route")
-    if input_data.weather_severity_score >= 3 or input_data.weather_condition in ["rainy", "foggy"]:
-        drivers.append(f"Adverse weather condition ({input_data.weather_condition}, severity score {input_data.weather_severity_score}/5)")
+    if req_speed > 35.0:
+        drivers.append(f"Compressed SLA target time: requires excessive transit speed ({req_speed:.1f} km/h) across route")
+    elif req_speed < 12.0:
+        drivers.append(f"Generous SLA delivery window ({input_data.expected_time_hours} hrs) provides ample operational buffer")
+
+    if input_data.distance_km > 200:
+        drivers.append(f"Long-haul route distance ({input_data.distance_km} km) elevates cumulative transit vulnerability")
+
+    if input_data.number_of_stops >= 3:
+        drivers.append(f"Multi-stop schedule ({input_data.number_of_stops} delivery stops) adding cumulative dwell time delays")
+    elif input_data.number_of_stops == 0:
+        drivers.append("Direct non-stop delivery eliminates intermediate loading and handover bottlenecks")
+
+    if input_data.traffic_level == "Severe":
+        drivers.append("Severe traffic bottleneck: extreme corridor congestion causing substantial transit backlog (Guaranteed Delay Driver)")
+    elif input_data.traffic_level == "High":
+        drivers.append(f"Elevated traffic congestion ({input_data.traffic_level} level) along primary dispatch corridor slowing average transit speed")
+    elif input_data.traffic_level == "Low":
+        drivers.append("Free-flowing traffic corridor facilitating steady vehicle velocity")
+
     if input_data.rush_hour_delivery == "Yes":
-        drivers.append("Scheduled during peak urban rush hour traffic windows")
+        drivers.append("Scheduled during peak urban rush hour traffic windows (adds 20-35% transit overhead)")
+
+    if input_data.weather_severity_score >= 3 or input_data.weather_condition.lower() in ["stormy", "rainy", "foggy"]:
+        drivers.append(f"Adverse weather condition ({input_data.weather_condition}, severity score {input_data.weather_severity_score}/5) impacting transit safety & speed")
+
     if input_data.road_quality_index < 60:
         drivers.append(f"Sub-optimal road quality index ({input_data.road_quality_index}/100) slowing transit speed")
-    if input_data.number_of_stops >= 4:
-        drivers.append(f"High multi-stop schedule ({input_data.number_of_stops} delivery stops)")
-    if input_data.maintenance_score < 70:
-        drivers.append(f"Vehicle maintenance score is below recommended threshold ({input_data.maintenance_score}/100)")
+
+    if input_data.driver_rating < 4.0:
+        drivers.append(f"Driver rating ({input_data.driver_rating}/5.0) reflects historical route delivery challenges")
+
     if not drivers:
         drivers.append("Baseline operational parameters within safe variance envelope")
 
     # Dynamic actionable recommendations
     mitigations = []
+    if req_speed > 30.0:
+        suggested_sla = round(input_data.distance_km / 22.0, 1)
+        mitigations.append(f"Extend SLA delivery target from {input_data.expected_time_hours}h to at least {suggested_sla}h to avoid breach.")
     if input_data.traffic_level in ["High", "Severe"] or input_data.rush_hour_delivery == "Yes":
-        mitigations.append("Shift departure window by 60-90 minutes to bypass peak congestion corridor.")
+        mitigations.append("Shift departure window by 60-90 minutes or re-route along bypass highway arterials.")
     if input_data.number_of_stops >= 3:
-        mitigations.append("Consolidate waypoint drop-offs or split consignments to reduce stop delay penalties.")
-    if input_data.vehicle_type == "bike" and input_data.distance_km > 150:
-        mitigations.append("Reassign long-distance payload to EV Van or Medium Transit Truck for reliable speed.")
+        mitigations.append("Consolidate waypoint drop-offs or split consignments across secondary couriers to reduce stop penalties.")
+    if input_data.vehicle_type == "bike" and input_data.distance_km > 100:
+        mitigations.append("Reassign long-distance payload to EV Van or Medium Transit Truck for reliable cruising speed.")
+    if input_data.weather_condition.lower() in ["rainy", "stormy", "foggy"]:
+        mitigations.append("Pre-buffer delivery ETA by 2 hours and assign senior drivers trained in adverse weather transit.")
     if not mitigations:
         mitigations.append("Dispatch parameters are well-optimized. Proceed with scheduled delivery partner.")
 
