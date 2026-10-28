@@ -7,8 +7,17 @@
     <title>Data-Driven Optimization of Delivery Logistics in Supply Chain</title>
     <!-- Leaflet CSS for interactive Route & Regional GIS map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Apply saved/system theme before first paint to avoid a flash -->
+    <script>
+      (function () {
+        var t;
+        try { t = localStorage.getItem('routeiq-theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.classList.add(t);
+      })();
+    </script>
   </head>
-  <body class="bg-slate-950 text-slate-100 antialiased font-sans min-h-screen">
+  <body class="antialiased font-sans min-h-screen">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -124,7 +124,7 @@ export const DeliveriesExplorerModule: React.FC = () => {
         {/* CSV Export Action Button */}
         <button
           onClick={handleExport}
-          className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-600/20 shrink-0"
+          className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-onaccent text-xs font-bold transition shadow-lg shadow-emerald-600/20 shrink-0"
         >
           <Download className="h-4 w-4" />
           <span>Export Filtered CSV ({totalMatched.toLocaleString()})</span>
@@ -147,7 +147,7 @@ export const DeliveriesExplorerModule: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold transition shadow-md shadow-brand-600/30"
+            className="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-onaccent rounded-xl text-xs font-bold transition shadow-md shadow-brand-600/30"
           >
             Search
           </button>
