@@ -153,7 +153,7 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
     }
   };
 
-  const top10Features = feature_importances?.slice(0, 8) || [];
+  const top10Features = feature_importances?.slice(1, 8) || [];
 
   return (
     <div className="space-y-6">
@@ -221,7 +221,6 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
               <h2 className="text-base font-bold text-white">Primary Delay Predictor Variables</h2>
               <p className="text-xs text-slate-400">Normalized feature importance weights from Random Forest model</p>
             </div>
-            <span className="text-xs text-brand-400 font-mono">RandomForest (150 trees)</span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">

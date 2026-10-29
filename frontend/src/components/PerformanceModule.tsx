@@ -96,17 +96,7 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
           <CloudSun className="h-4 w-4" />
           <span>Weather Conditions</span>
         </button>
-        <button
-          onClick={() => setActiveTab('traffic')}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold transition ${
-            activeTab === 'traffic'
-              ? 'bg-brand-600 text-onaccent shadow-md shadow-brand-600/30'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-          }`}
-        >
-          <Flame className="h-4 w-4" />
-          <span>Traffic & Congestion</span>
-        </button>
+      
       </div>
 
       {/* Tab 1: Partners */}
@@ -236,24 +226,21 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
                     <span className="text-slate-400">Delay Rate:</span>
                     <span className="font-mono text-amber-400 font-bold">{v.delay_rate_pct}%</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Avg Fuel Cost:</span>
-                    <span className="font-mono text-white font-bold">₹{v.avg_fuel_cost.toFixed(0)}</span>
-                  </div>
+                  
+                  {/*
                   <div className="flex justify-between">
                     <span className="text-slate-400">Carbon Footprint:</span>
                     <span className={`font-mono font-bold ${v.is_ev ? 'text-emerald-400' : 'text-slate-300'}`}>
                       {v.avg_carbon_kg.toFixed(1)} kg CO2
                     </span>
                   </div>
+                  */}
                   <div className="flex justify-between">
                     <span className="text-slate-400">Capacity Utilization:</span>
                     <span className="font-mono text-indigo-400 font-bold">{v.avg_capacity_pct}%</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Fleet Maintenance:</span>
-                    <span className="font-mono text-white">{v.avg_maintenance_score}/100</span>
-                  </div>
+                  
+                
                 </div>
               </div>
             ))}
@@ -288,72 +275,13 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
                     <span className="text-slate-400">Avg Delivery Time:</span>
                     <span className="font-mono text-white">{w.avg_time_hours} hrs</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Traffic Delay Minutes:</span>
-                    <span className="font-mono text-amber-400">{w.avg_traffic_delay_mins} mins</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">GPS Route Deviation:</span>
-                    <span className="font-mono text-slate-300">{w.avg_gps_deviation_km} km</span>
-                  </div>
+                  
                 </div>
               </div>
             ))}
           </div>
         </div>
-      )}
-
-      
-{/* Tab 4: Traffic */}
-{activeTab === 'traffic' && (
-  <div className="space-y-6">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-      {traffic_impact.map((t) => (
-        <div
-          key={t.traffic_level}
-          className="flex flex-col min-w-0 h-full bg-slate-900/80 border border-slate-800 rounded-xl p-4"
-        >
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">
-            {t.traffic_level} Traffic
-          </span>
-
-          <div className="text-2xl font-black text-white mt-2 font-mono leading-tight">
-            {t.delay_rate_pct}%
-          </div>
-
-          <div className="text-[11px] text-slate-500 mt-1">
-            Delay Rate
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-slate-800 text-xs space-y-3 flex-1">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-slate-400">Delay Added:</span>
-              <span className="font-mono font-bold text-amber-400 whitespace-nowrap">
-                {t.avg_traffic_delay_mins} mins
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-slate-400">Avg Total Time:</span>
-              <span className="font-mono text-white whitespace-nowrap">
-                {t.avg_time_hours} hrs
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-slate-400">Fuel Expenditure:</span>
-              <span className="font-mono text-white whitespace-nowrap">
-                ₹{t.avg_fuel_cost.toFixed(0)}
-              </span>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
-    
+      )}    
     </div>
   );
 };
