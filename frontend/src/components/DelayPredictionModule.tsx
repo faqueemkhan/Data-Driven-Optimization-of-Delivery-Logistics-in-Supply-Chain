@@ -20,6 +20,7 @@ import {
   Cell
 } from 'recharts';
 import { MLMetrics, PredictionResult } from '../types';
+import { useTheme } from '../theme';
 import { api } from '../services/api';
 
 interface DelayPredictionModuleProps {
@@ -28,6 +29,7 @@ interface DelayPredictionModuleProps {
 }
 
 export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ metrics, loading }) => {
+  const { chart } = useTheme();
   const [formData, setFormData] = useState({
     delivery_partner: 'delhivery',
     package_type: 'electronics',
@@ -228,14 +230,14 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
                 layout="vertical"
                 margin={{ top: 5, right: 30, left: 90, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis type="number" stroke="#64748b" tick={{ fontSize: 10 }} unit="%" />
-                <YAxis dataKey="feature" type="category" stroke="#94a3b8" tick={{ fontSize: 11 }} />
+                <CartesianGrid strokeDasharray="3 3" stroke={chart.grid} />
+                <XAxis type="number" stroke={chart.axis} tick={{ fontSize: 10 }} unit="%" />
+                <YAxis dataKey="feature" type="category" stroke={chart.tick} tick={{ fontSize: 11 }} />
                 <Tooltip
                   formatter={(val: any) => [`${val}%`, 'Importance']}
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '12px' }}
-                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
-                  itemStyle={{ color: '#e2e8f0' }}
+                  contentStyle={{ backgroundColor: chart.tooltipBg, borderColor: chart.tooltipBorder, borderRadius: '0.5rem', fontSize: '12px' }}
+                  labelStyle={{ color: chart.tooltipText, fontWeight: 700 }}
+                  itemStyle={{ color: chart.tooltipText }}
                 />
                 <Bar dataKey="importance_pct" fill="#0284c7" radius={[0, 4, 4, 0]}>
                   {top10Features.map((_, index) => (
@@ -444,11 +446,11 @@ export const DelayPredictionModule: React.FC<DelayPredictionModuleProps> = ({ me
             <button
               type="submit"
               disabled={predicting}
-              className="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition shadow-lg shadow-brand-600/30 disabled:opacity-50"
+              className="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-onaccent text-xs font-bold transition shadow-lg shadow-brand-600/30 disabled:opacity-50"
             >
               {predicting ? (
                 <>
-                  <div className="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-onaccent"></div>
                   <span>Evaluating Risk...</span>
                 </>
               ) : (

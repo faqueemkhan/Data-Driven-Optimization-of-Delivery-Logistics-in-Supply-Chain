@@ -11,6 +11,7 @@ import {
   Activity
 } from 'lucide-react';
 import { HealthStatus } from '../types';
+import { ThemeToggle } from './ThemeToggle';
 
 interface NavbarProps {
   activeTab: string;
@@ -37,12 +38,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, health 
           {/* Brand & Title */}
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
-              <Activity className="h-6 w-6 text-white" />
+              <Activity className="h-6 w-6 text-onaccent" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-base tracking-tight text-white sm:text-lg">
-                  LogiOptima <span className="text-brand-500">For Supply Chain</span>
+                  Route<span className="text-brand-500">IQ</span>
+                  <span className="ml-2 font-semibold text-slate-400 text-sm sm:text-base">Delivery Intelligence</span>
                 </span>
               { /* <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 uppercase tracking-wider font-mono">
                   v1.0
@@ -57,6 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, health 
 
          {/* Login and Sign In Boxes */}  
 <div className="flex items-center gap-2">
+  <ThemeToggle />
   <button className="px-3 py-1 rounded-md border border-white/30 text-white transition-all duration-300 hover:bg-white hover:text-slate-950 hover:border-white hover:shadow-lg hover:shadow-white/10">
     Login
   </button>
@@ -78,11 +81,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, health 
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                   isActive
-                    ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30 font-semibold'
+                    ? 'bg-brand-600 text-onaccent shadow-md shadow-brand-600/30 font-semibold'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <Icon className={`h-4 w-4 ${isActive ? 'text-onaccent' : 'text-slate-400'}`} />
                 <span>{item.label}</span>
               </button>
             );

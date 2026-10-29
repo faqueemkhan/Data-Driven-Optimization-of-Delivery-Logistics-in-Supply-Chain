@@ -4,9 +4,152 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens: slate, white and light accent shades are remapped per theme (see tailwind.config.js) */
+:root {
+  color-scheme: dark;
+  --brand-200: 186 230 253;
+  --brand-300: 125 211 252;
+  --brand-400: 56 189 248;
+  --brand-950: 8 47 73;
+  --amber-200: 253 230 138;
+  --amber-300: 252 211 77;
+  --amber-400: 251 191 36;
+  --amber-950: 69 26 3;
+  --emerald-200: 167 243 208;
+  --emerald-300: 110 231 183;
+  --emerald-400: 52 211 153;
+  --emerald-950: 2 44 34;
+  --rose-200: 254 205 211;
+  --rose-300: 253 164 175;
+  --rose-400: 251 113 133;
+  --rose-950: 76 5 25;
+  --indigo-200: 199 210 254;
+  --indigo-300: 165 180 252;
+  --indigo-400: 129 140 248;
+  --indigo-950: 30 27 75;
+  --green-200: 187 247 208;
+  --green-300: 134 239 172;
+  --green-400: 74 222 128;
+  --green-950: 5 46 22;
+  --teal-200: 153 246 228;
+  --teal-300: 94 234 212;
+  --teal-400: 45 212 191;
+  --teal-950: 4 47 46;
+  --violet-200: 221 214 254;
+  --violet-300: 196 181 253;
+  --violet-400: 167 139 250;
+  --violet-950: 46 16 101;
+  --blue-200: 191 219 254;
+  --blue-300: 147 197 253;
+  --blue-400: 96 165 250;
+  --blue-950: 23 37 84;
+  --slate-50: 248 250 252;
+  --slate-100: 241 245 249;
+  --slate-200: 226 232 240;
+  --slate-300: 203 213 225;
+  --slate-400: 148 163 184;
+  --slate-500: 100 116 139;
+  --slate-600: 71 85 105;
+  --slate-700: 51 65 85;
+  --slate-800: 30 41 59;
+  --slate-900: 15 23 42;
+  --slate-950: 2 6 23;
+  --white: 255 255 255;
+}
+
+html.light {
+  color-scheme: light;
+  --brand-200: 7 89 133;
+  --brand-300: 3 105 161;
+  --brand-400: 2 132 199;
+  --brand-950: 240 249 255;
+  --amber-200: 146 64 14;
+  --amber-300: 180 83 9;
+  --amber-400: 217 119 6;
+  --amber-950: 255 251 235;
+  --emerald-200: 6 95 70;
+  --emerald-300: 4 120 87;
+  --emerald-400: 5 150 105;
+  --emerald-950: 236 253 245;
+  --rose-200: 159 18 57;
+  --rose-300: 190 18 60;
+  --rose-400: 225 29 72;
+  --rose-950: 255 241 242;
+  --indigo-200: 55 48 163;
+  --indigo-300: 67 56 202;
+  --indigo-400: 79 70 229;
+  --indigo-950: 238 242 255;
+  --green-200: 22 101 52;
+  --green-300: 21 128 61;
+  --green-400: 22 163 74;
+  --green-950: 240 253 244;
+  --teal-200: 17 94 89;
+  --teal-300: 15 118 110;
+  --teal-400: 13 148 136;
+  --teal-950: 240 253 250;
+  --violet-200: 91 33 182;
+  --violet-300: 109 40 217;
+  --violet-400: 124 58 237;
+  --violet-950: 245 243 255;
+  --blue-200: 30 64 175;
+  --blue-300: 29 78 216;
+  --blue-400: 37 99 235;
+  --blue-950: 239 246 255;
+  --slate-50: 11 18 32;
+  --slate-100: 15 23 42;
+  --slate-200: 30 41 59;
+  --slate-300: 51 65 85;
+  --slate-400: 75 90 112;
+  --slate-500: 102 117 139;
+  --slate-600: 154 167 185;
+  --slate-700: 211 219 230;
+  --slate-800: 230 236 243;
+  --slate-900: 255 255 255;
+  --slate-950: 238 242 247;
+  --white: 15 23 42;
+}
+
 @layer base {
   body {
     @apply bg-slate-950 text-slate-100 selection:bg-brand-600 selection:text-white;
+  }
+}
+
+/* Light mode: give cards some depth since there is less contrast between surfaces */
+html.light .rounded-2xl.border,
+html.light .rounded-xl.border {
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 4px 16px -6px rgb(15 23 42 / 0.08);
+}
+
+/* Smooth colour cross-fade when switching themes (fallback when View Transitions are unavailable) */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 450ms ease, border-color 450ms ease, color 450ms ease,
+    fill 450ms ease, stroke 450ms ease, box-shadow 450ms ease !important;
+  transition-delay: 0ms !important;
+}
+
+/* Circular reveal driven by the View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* Theme toggle icon animation */
+.theme-toggle-icon {
+  transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 300ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-icon,
+  html.theme-transition * {
+    transition: none !important;
   }
 }
 
@@ -16,28 +159,28 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: rgb(var(--slate-900));
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: rgb(var(--slate-700));
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: rgb(var(--slate-600));
 }
 
-/* Leaflet dark theme map enhancements */
+/* Leaflet map theming */
 .leaflet-container {
-  background-color: #0b1120 !important;
+  background-color: rgb(var(--slate-950)) !important;
   font-family: inherit;
 }
 .leaflet-popup-content-wrapper {
-  background: #0f172a !important;
-  color: #f1f5f9 !important;
-  border: 1px solid #334155 !important;
+  background: rgb(var(--slate-900)) !important;
+  color: rgb(var(--slate-100)) !important;
+  border: 1px solid rgb(var(--slate-700)) !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35) !important;
 }
 .leaflet-popup-tip {
-  background: #0f172a !important;
+  background: rgb(var(--slate-900)) !important;
 }

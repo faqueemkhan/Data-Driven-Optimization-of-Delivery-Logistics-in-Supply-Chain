@@ -20,6 +20,7 @@ import {
   Cell
 } from 'recharts';
 import { PerformanceData } from '../types';
+import { useTheme } from '../theme';
 
 interface PerformanceModuleProps {
   data: PerformanceData | null;
@@ -29,6 +30,7 @@ interface PerformanceModuleProps {
 const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4'];
 
 export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, loading }) => {
+  const { chart } = useTheme();
   const [activeTab, setActiveTab] = useState<'partners' | 'vehicles' | 'weather' | 'traffic'>('partners');
 
   if (loading || !data) {
@@ -65,7 +67,7 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
           onClick={() => setActiveTab('partners')}
           className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold transition ${
             activeTab === 'partners'
-              ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30'
+              ? 'bg-brand-600 text-onaccent shadow-md shadow-brand-600/30'
               : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
@@ -76,7 +78,7 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
           onClick={() => setActiveTab('vehicles')}
           className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold transition ${
             activeTab === 'vehicles'
-              ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30'
+              ? 'bg-brand-600 text-onaccent shadow-md shadow-brand-600/30'
               : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
@@ -87,7 +89,7 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
           onClick={() => setActiveTab('weather')}
           className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold transition ${
             activeTab === 'weather'
-              ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30'
+              ? 'bg-brand-600 text-onaccent shadow-md shadow-brand-600/30'
               : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
@@ -98,7 +100,7 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
           onClick={() => setActiveTab('traffic')}
           className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold transition ${
             activeTab === 'traffic'
-              ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30'
+              ? 'bg-brand-600 text-onaccent shadow-md shadow-brand-600/30'
               : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
           }`}
         >
@@ -125,21 +127,21 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
   >
     <CartesianGrid
       strokeDasharray="3 3"
-      stroke="#1e293b"
+      stroke={chart.grid}
       vertical={false}
     />
 
     <XAxis
       dataKey="partner"
-      stroke="#64748b"
-      tick={{ fontSize: 11, fill: '#94a3b8' }}
+      stroke={chart.axis}
+      tick={{ fontSize: 11, fill: chart.tick }}
       tickLine={false}
       axisLine={false}
     />
 
     <YAxis
-      stroke="#64748b"
-      tick={{ fontSize: 11, fill: '#94a3b8' }}
+      stroke={chart.axis}
+      tick={{ fontSize: 11, fill: chart.tick }}
       tickLine={false}
       axisLine={false}
       unit="%"
@@ -147,13 +149,13 @@ export const PerformanceModule: React.FC<PerformanceModuleProps> = ({ data, load
 
     <Tooltip
       contentStyle={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #334155',
+        backgroundColor: chart.tooltipBg,
+        border: `1px solid ${chart.tooltipBorder}`,
         borderRadius: '8px',
         fontSize: '12px'
       }}
       labelStyle={{
-        color: '#e2e8f0',
+        color: chart.tooltipText,
         fontWeight: 700
       }}
       itemStyle={{ color: '#38bdf8' }}

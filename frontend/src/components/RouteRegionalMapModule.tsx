@@ -200,7 +200,7 @@ export const RouteRegionalMapModule: React.FC<RouteRegionalMapModuleProps> = ({ 
                 onClick={() => setActiveLayer(layer)}
                 className={`px-3 py-1 rounded-md capitalize font-medium transition ${
                   activeLayer === layer
-                    ? 'bg-brand-600 text-white font-semibold shadow'
+                    ? 'bg-brand-600 text-onaccent font-semibold shadow'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -218,11 +218,11 @@ export const RouteRegionalMapModule: React.FC<RouteRegionalMapModuleProps> = ({ 
           <div className="absolute bottom-3 right-3 z-[1000] bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-lg p-2.5 text-[11px] shadow-xl text-slate-300 space-y-1.5 pointer-events-auto">
             <div className="font-bold text-white text-xs border-b border-slate-800 pb-1">Legend</div>
             <div className="flex items-center space-x-2">
-              <span className="h-3 w-3 rounded-full bg-amber-500 border border-white inline-block"></span>
+              <span className="h-3 w-3 rounded-full bg-amber-500 border border-onaccent inline-block"></span>
               <span>Central Warehouses (5)</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="h-3 w-3 rounded-full bg-sky-500 border border-white inline-block"></span>
+              <span className="h-3 w-3 rounded-full bg-sky-500 border border-onaccent inline-block"></span>
               <span>Regional Hubs (20)</span>
             </div>
             <div className="flex items-center space-x-2">
