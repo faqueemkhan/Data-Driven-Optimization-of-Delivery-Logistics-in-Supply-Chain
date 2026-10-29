@@ -303,16 +303,7 @@ export const DeliveriesExplorerModule: React.FC = () => {
                     <ArrowUpDown className="h-3 w-3" />
                   </div>
                 </th>
-                <th
-                  onClick={() => toggleSort('net_profit')}
-                  className="py-3 px-3 cursor-pointer hover:text-white"
-                >
-                  <div className="flex items-center space-x-1">
-                    <span>Net Profit</span>
-                    <ArrowUpDown className="h-3 w-3" />
-                  </div>
-                </th>
-                <th className="py-3 px-3">CO2</th>
+
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
@@ -363,10 +354,6 @@ export const DeliveriesExplorerModule: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-3 px-3 font-mono text-slate-200">₹{r.delivery_cost?.toFixed(0)}</td>
-                    <td className={`py-3 px-3 font-mono font-bold ${r.net_profit < 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                      ₹{r.net_profit?.toFixed(1)}
-                    </td>
-                    <td className="py-3 px-3 font-mono text-slate-400">{r.carbon_emission_kg?.toFixed(1)} kg</td>
                   </tr>
                 ))
               )}
